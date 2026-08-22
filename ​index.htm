@@ -1,716 +1,1006 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DARK - Digital Entertainment & Gaming Hub</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARK | Gaming Store</title>
 
-    body {
-      background-color: #05070a;
-      color: #e6edf3;
-      overflow-x: hidden;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#030406;
+color:#fff;
+overflow-x:hidden;
+}
 
-    /* NAVIGATION BAR */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: rgba(10, 14, 23, 0.85);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid #1f293d;
-    }
+body:before{
+content:"";
+position:fixed;
+inset:0;
+z-index:-5;
+background:
+linear-gradient(180deg,rgba(0,0,0,.45),#030406 85%),
+url("1787436314905.png") center/cover no-repeat;
+}
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+body:after{
+content:"";
+position:fixed;
+inset:0;
+z-index:-4;
+background:
+radial-gradient(circle at 20% 20%,rgba(0,145,255,.22),transparent 28%),
+radial-gradient(circle at 80% 40%,rgba(0,255,140,.10),transparent 25%);
+pointer-events:none;
+}
 
-    .logo-infinity {
-      font-size: 28px;
-      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #00c6ff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: bold;
-    }
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
 
-    .logo-text {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: 3px;
-      color: #ffffff;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
+/* HEADER */
+header{
+position:fixed;
+top:0;
+left:0;
+right:0;
+z-index:1000;
+background:rgba(0,0,0,.68);
+backdrop-filter:blur(18px);
+border-bottom:1px solid rgba(0,170,255,.18);
+}
 
-    nav {
-      display: flex;
-      gap: 20px;
-    }
+.nav{
+width:min(1200px,92%);
+height:78px;
+margin:auto;
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
 
-    nav a {
-      color: #8b949e;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
+.logo-img{
+width:125px;
+height:60px;
+object-fit:contain;
+filter:drop-shadow(0 0 12px #008cff);
+}
 
-    nav a:hover, nav a.active {
-      color: #38bdf8;
-    }
+nav{
+display:flex;
+gap:28px;
+}
 
-    .header-actions {
-      display: flex;
-      gap: 20px;
-      color: #8b949e;
-      font-size: 14px;
-      cursor: pointer;
-    }
+nav a{
+font-size:12px;
+font-weight:900;
+letter-spacing:1px;
+color:#b4becb;
+}
 
-    .header-actions span:hover {
-      color: #ffffff;
-    }
+nav a:hover{
+color:#00b7ff;
+text-shadow:0 0 15px #008cff;
+}
 
-    /* HERO SECTION */
-    .hero {
-      position: relative;
-      padding: 80px 20px 100px;
-      text-align: center;
-      background: radial-gradient(circle at center, rgba(14, 116, 144, 0.15) 0%, rgba(5, 7, 10, 1) 70%);
-      border-bottom: 1px solid #161e2e;
-      overflow: hidden;
-    }
+.menu{
+display:none;
+background:none;
+border:1px solid #123;
+color:#fff;
+padding:10px;
+border-radius:10px;
+}
 
-    .hero-glow {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 250px;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
-      pointer-events: none;
-    }
+/* HERO */
+.hero{
+min-height:100vh;
+padding-top:78px;
+display:flex;
+align-items:center;
+}
 
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      color: #ffffff;
-    }
+.hero-inner{
+width:min(1200px,92%);
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+align-items:center;
+}
 
-    .hero p {
-      color: #94a3b8;
-      font-size: 16px;
-      margin-bottom: 30px;
-    }
+.tag{
+color:#00b7ff;
+font-size:11px;
+font-weight:900;
+letter-spacing:3px;
+margin-bottom:15px;
+}
 
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
+.hero h1{
+font-size:clamp(55px,8vw,105px);
+line-height:.85;
+letter-spacing:-6px;
+}
 
-    .btn {
-      padding: 12px 28px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-    }
+.hero h1 span{
+color:#00aaff;
+text-shadow:
+0 0 15px #008cff,
+0 0 50px rgba(0,140,255,.7);
+}
 
-    .btn-glow-blue {
-      background: transparent;
-      color: #38bdf8;
-      border: 1px solid #0284c7;
-      box-shadow: 0 0 15px rgba(2, 132, 199, 0.3);
-    }
+.hero p{
+max-width:560px;
+margin:28px 0;
+color:#a0adbb;
+line-height:1.7;
+font-size:16px;
+}
 
-    .btn-glow-blue:hover {
-      background: #0284c7;
-      color: #fff;
-      box-shadow: 0 0 25px rgba(2, 132, 199, 0.6);
-    }
+.actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
 
-    /* MAIN CATEGORIES */
-    .section-container {
-      max-width: 1200px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
+.btn{
+border:0;
+border-radius:12px;
+padding:15px 22px;
+font-weight:900;
+cursor:pointer;
+transition:.25s;
+}
 
-    .section-title {
-      text-align: center;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 30px;
-      color: #f1f5f9;
-    }
+.primary{
+background:linear-gradient(135deg,#00aaff,#00e5ff);
+color:#001018;
+box-shadow:0 0 30px rgba(0,170,255,.3);
+}
 
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-    }
+.primary:hover{
+transform:translateY(-3px);
+box-shadow:0 0 50px rgba(0,170,255,.6);
+}
 
-    .cat-card {
-      background: #0b0f17;
-      border-radius: 12px;
-      padding: 25px 20px;
-      text-align: center;
-      transition: all 0.3s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 220px;
-    }
+.secondary{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.15);
+color:#fff;
+}
 
-    .cat-card.blue {
-      border: 1px solid rgba(14, 165, 233, 0.3);
-      box-shadow: 0 0 15px rgba(14, 165, 233, 0.05);
-    }
+/* HERO LOGO */
+.hero-logo{
+width:min(450px,90%);
+display:block;
+margin:auto;
+filter:
+drop-shadow(0 0 15px #008cff)
+drop-shadow(0 0 45px rgba(0,120,255,.4));
+animation:float 4s ease-in-out infinite;
+}
 
-    .cat-card.blue:hover {
-      border-color: #38bdf8;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
-      transform: translateY(-4px);
-    }
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-14px)}
+}
 
-    .cat-card.green {
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.05);
-    }
+/* SECTIONS */
+section{
+padding:100px 0;
+}
 
-    .cat-card.green:hover {
-      border-color: #4ade80;
-      box-shadow: 0 0 20px rgba(74, 222, 128, 0.25);
-      transform: translateY(-4px);
-    }
+.wrap{
+width:min(1200px,92%);
+margin:auto;
+}
 
-    .cat-icon {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
+h2{
+font-size:clamp(34px,5vw,58px);
+margin-bottom:10px;
+}
 
-    .cat-card h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: #f8fafc;
-    }
+.desc{
+color:#8592a2;
+line-height:1.6;
+margin-bottom:35px;
+}
 
-    .cat-card p {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
+/* GAMES */
+.games{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px;
+}
 
-    /* CAROUSEL / SLIDER SECTION */
-    .slider-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+.game{
+height:390px;
+position:relative;
+overflow:hidden;
+border-radius:22px;
+border:1px solid rgba(255,255,255,.1);
+background:#080c11;
+cursor:pointer;
+transition:.35s;
+}
 
-    .slider-controls {
-      display: flex;
-      gap: 10px;
-    }
+.game:hover{
+transform:translateY(-9px);
+border-color:#00aaff;
+box-shadow:0 20px 60px rgba(0,0,0,.6),
+0 0 30px rgba(0,170,255,.18);
+}
 
-    .slider-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #fff;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
+.game img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:.5s;
+}
 
-    .slider-btn:hover {
-      background: #0284c7;
-      border-color: #38bdf8;
-    }
+.game:hover img{
+transform:scale(1.08);
+}
 
-    .cards-slider-wrapper {
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      scrollbar-width: none; /* Firefox */
-      padding: 10px 0;
-    }
+.game:after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(
+transparent 25%,
+rgba(0,0,0,.95)
+);
+}
 
-    .cards-slider-wrapper::-webkit-scrollbar {
-      display: none; /* Chrome/Safari */
-    }
+.game-info{
+position:absolute;
+bottom:20px;
+left:20px;
+right:20px;
+z-index:2;
+}
 
-    .cards-slider {
-      display: flex;
-      gap: 20px;
-    }
+.game-info small{
+color:#00b7ff;
+font-weight:900;
+letter-spacing:2px;
+}
 
-    /* GAME & ITEM CARDS */
-    .game-card {
-      min-width: 220px;
-      max-width: 220px;
-      background: #0d131d;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      transition: all 0.3s;
-      flex-shrink: 0;
-    }
+.game-info h3{
+font-size:25px;
+margin:8px 0;
+}
 
-    .game-card:hover {
-      border-color: #38bdf8;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      transform: translateY(-4px);
-    }
+.game-info p{
+color:#aab4c0;
+}
 
-    .game-card img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
+/* DEALS */
+.deals{
+display:grid;
+grid-template-columns:1.4fr .8fr;
+gap:18px;
+}
 
-    .game-card .title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 4px;
-    }
+.deal{
+padding:38px;
+min-height:260px;
+border-radius:25px;
+border:1px solid rgba(0,170,255,.2);
+background:rgba(7,12,18,.85);
+}
 
-    .game-card .subtitle {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 12px;
-    }
+.deal h3{
+font-size:32px;
+margin-bottom:14px;
+}
 
-    .game-card .price {
-      font-size: 16px;
-      font-weight: 800;
-      color: #38bdf8;
-      margin-bottom: 12px;
-    }
+.deal p{
+color:#8492a2;
+line-height:1.7;
+margin-bottom:25px;
+}
 
-    .btn-card {
-      width: 100%;
-      padding: 8px 0;
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #38bdf8;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+/* FEATURES */
+.features{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+}
 
-    .btn-card:hover {
-      background: #0284c7;
-      color: #fff;
-      border-color: #38bdf8;
-    }
+.feature{
+padding:30px;
+border-radius:20px;
+background:rgba(255,255,255,.035);
+border:1px solid rgba(255,255,255,.08);
+}
 
-    /* CONTACT / PAYMENT FLOATING BANNER */
-    .payment-banner {
-      background: linear-gradient(90deg, #0b1320 0%, #111c2e 100%);
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 40px auto;
-      max-width: 1200px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
+.feature span{
+font-size:30px;
+}
 
-    .info-box {
-      text-align: center;
-    }
+.feature h3{
+margin:17px 0 9px;
+}
 
-    .info-box span {
-      display: block;
-      font-size: 12px;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+.feature p{
+color:#7e8b9b;
+line-height:1.6;
+}
 
-    .info-box strong {
-      font-size: 16px;
-      color: #38bdf8;
-    }
+/* PAYMENT */
+.payment{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
 
-    /* FLOATING WHATSAPP & CHAT WIDGET */
-    .floating-chat {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      z-index: 1000;
-    }
+.payment-card{
+padding:35px;
+border-radius:25px;
+background:rgba(7,12,18,.9);
+border:1px solid rgba(0,170,255,.2);
+}
 
-    .chat-btn {
-      background: #0284c7;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 25px;
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
-      cursor: pointer;
-      border: none;
-      text-decoration: none;
-    }
+.payment-card h3{
+font-size:28px;
+margin-bottom:20px;
+}
 
-    .wa-btn {
-      background: #25d366;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-    }
+.line{
+display:flex;
+justify-content:space-between;
+gap:20px;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.07);
+}
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      border-top: 1px solid #161e2e;
-      color: #64748b;
-      font-size: 13px;
-      margin-top: 50px;
-    }
-  </style>
+.line span{
+color:#8290a0;
+}
+
+/* CONTACT */
+.contact{
+text-align:center;
+padding:70px 30px;
+border-radius:30px;
+background:
+linear-gradient(rgba(3,7,12,.8),rgba(3,7,12,.9)),
+url("1787436314905.png") center/cover;
+border:1px solid rgba(0,170,255,.2);
+}
+
+.contact p{
+color:#8794a4;
+margin:15px 0 25px;
+}
+
+/* FOOTER */
+footer{
+padding:35px 0;
+border-top:1px solid rgba(255,255,255,.08);
+color:#667384;
+}
+
+.footer{
+width:min(1200px,92%);
+margin:auto;
+display:flex;
+justify-content:space-between;
+}
+
+/* PRODUCT POPUP */
+.modal-bg{
+position:fixed;
+inset:0;
+z-index:3000;
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+background:rgba(0,0,0,.82);
+backdrop-filter:blur(12px);
+}
+
+.modal-bg.open{
+display:flex;
+}
+
+.modal{
+width:min(950px,100%);
+max-height:90vh;
+overflow:auto;
+background:#080c11;
+border:1px solid rgba(0,170,255,.3);
+border-radius:25px;
+box-shadow:0 30px 100px #000;
+}
+
+.modal-grid{
+display:grid;
+grid-template-columns:.9fr 1.1fr;
+}
+
+.modal-image{
+min-height:480px;
+}
+
+.modal-image img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.modal-content{
+padding:35px;
+}
+
+.close{
+float:right;
+background:none;
+border:0;
+color:#fff;
+font-size:28px;
+cursor:pointer;
+}
+
+.modal-content h2{
+margin:15px 0;
+}
+
+.package{
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:15px;
+margin:8px 0;
+border-radius:12px;
+border:1px solid rgba(255,255,255,.08);
+background:#0d131b;
+color:#fff;
+cursor:pointer;
+}
+
+.package:hover,
+.package.selected{
+border-color:#00aaff;
+background:rgba(0,170,255,.1);
+}
+
+.field{
+width:100%;
+padding:15px;
+margin:15px 0;
+border-radius:11px;
+border:1px solid rgba(255,255,255,.1);
+background:#030609;
+color:#fff;
+outline:none;
+}
+
+.field:focus{
+border-color:#00aaff;
+}
+
+/* MOBILE */
+@media(max-width:950px){
+.hero-inner{
+grid-template-columns:1fr;
+text-align:center;
+}
+
+.hero p{
+margin-left:auto;
+margin-right:auto;
+}
+
+.actions{
+justify-content:center;
+}
+
+.games{
+grid-template-columns:repeat(2,1fr);
+}
+
+.payment,
+.deals{
+grid-template-columns:1fr;
+}
+}
+
+@media(max-width:700px){
+
+nav{
+display:none;
+position:absolute;
+top:78px;
+left:0;
+right:0;
+background:#030609;
+padding:25px;
+flex-direction:column;
+}
+
+nav.open{
+display:flex;
+}
+
+.menu{
+display:block;
+}
+
+.hero{
+min-height:auto;
+padding-top:130px;
+padding-bottom:70px;
+}
+
+.hero-logo{
+max-width:330px;
+}
+
+.games,
+.features{
+grid-template-columns:1fr;
+}
+
+.game{
+height:430px;
+}
+
+.modal-grid{
+grid-template-columns:1fr;
+}
+
+.modal-image{
+height:280px;
+min-height:0;
+}
+
+.footer{
+flex-direction:column;
+gap:10px;
+}
+}
+</style>
 </head>
+
 <body>
 
-  <!-- HEADER NAVBAR -->
-  <header>
-    <div class="logo-container">
-      <span class="logo-infinity">∞</span>
-      <span class="logo-text">DARK</span>
-    </div>
-    <nav>
-      <a href="#" class="active">Home</a>
-      <a href="#gaming">Gaming</a>
-      <a href="#giftcards">Gift Cards</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="header-actions">
-      <span>Search 🔍</span>
-      <span>Cart 🛒</span>
-    </div>
-  </header>
+<header>
+<div class="nav">
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <div class="hero-glow"></div>
-    <h1>WELCOME TO DARK</h1>
-    <p>Your Digital Entertainment & Gaming Hub in Guyana</p>
-    <div class="hero-buttons">
-      <a href="#gaming" class="btn btn-glow-blue">Browse Gaming</a>
-      <a href="#contact" class="btn btn-glow-blue">Payment Info</a>
-    </div>
-  </section>
+<a href="#home">
+<img class="logo-img"
+src="1787436309105.png"
+alt="DARK Logo">
+</a>
 
-  <!-- MAIN CATEGORIES -->
-  <div class="section-container">
-    <h2 class="section-title">Main Categories</h2>
-    <div class="categories-grid">
-      <div class="cat-card blue">
-        <div>
-          <div class="cat-icon">🎮</div>
-          <h3>Gaming UC & CP</h3>
-          <p>PUBG Mobile UC, COD Mobile CP, Free Fire Diamonds</p>
-        </div>
-        <button class="btn-card" onclick="scrollToSection('gaming')">View Packages</button>
-      </div>
+<nav id="nav">
+<a href="#home">HOME</a>
+<a href="#games">GAMING</a>
+<a href="#deals">DEALS</a>
+<a href="#payment">PAYMENT</a>
+<a href="#contact">CONTACT</a>
+</nav>
 
-      <div class="cat-card blue">
-        <div>
-          <div class="cat-icon">🧱</div>
-          <h3>Roblox</h3>
-          <p>Instant Robux top-ups for all packages</p>
-        </div>
-        <button class="btn-card" onclick="scrollToSection('roblox')">View Packages</button>
-      </div>
+<button class="menu"
+onclick="document.getElementById('nav').classList.toggle('open')">
+☰
+</button>
 
-      <div class="cat-card blue">
-        <div>
-          <div class="cat-icon">🎁</div>
-          <h3>Gift Cards</h3>
-          <p>Apple, PlayStation, Xbox, Steam & More</p>
-        </div>
-        <button class="btn-card" onclick="scrollToSection('giftcards')">View Packages</button>
-      </div>
+</div>
+</header>
 
-      <div class="cat-card green">
-        <div>
-          <div class="cat-icon">💳</div>
-          <h3>Digital Services</h3>
-          <p>MMG Transfers, Bill Payments & Instant Top-ups</p>
-        </div>
-        <button class="btn-card" style="color:#4ade80; border-color:#22c55e;" onclick="scrollToSection('contact')">MMG Info</button>
-      </div>
-    </div>
-  </div>
+<!-- HERO -->
+<section class="hero" id="home">
+<div class="hero-inner">
 
-  <!-- CONTACT & MMG PAYMENT BANNER -->
-  <div class="payment-banner" id="contact">
-    <div class="info-box">
-      <span>WhatsApp Contact</span>
-      <strong>+1 (343) 655-5995 / 700-2769</strong>
-    </div>
-    <div class="info-box">
-      <span>MMG Number</span>
-      <strong>762-6433</strong>
-    </div>
-    <div class="info-box">
-      <span>MMG Merchant Name</span>
-      <strong>CASSIA HENRY</strong>
-    </div>
-  </div>
+<div>
+<div class="tag">DARK DIGITAL GAMING</div>
 
-  <!-- PUBG MOBILE SECTION (MOVEABLE SLIDER) -->
-  <div class="section-container" id="gaming">
-    <div class="slider-header">
-      <h2 class="section-title" style="margin:0; text-align:left;">🔥 PUBG Mobile (UC)</h2>
-      <div class="slider-controls">
-        <button class="slider-btn" onclick="slide('pubg-slider', -250)">❮</button>
-        <button class="slider-btn" onclick="slide('pubg-slider', 250)">❯</button>
-      </div>
-    </div>
-    <div class="cards-slider-wrapper" id="pubg-slider">
-      <div class="cards-slider">
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="UC">
-          <div class="title">60 UC</div>
-          <div class="subtitle">PUBG Mobile</div>
-          <div class="price">$300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="UC">
-          <div class="title">325 UC</div>
-          <div class="subtitle">PUBG Mobile</div>
-          <div class="price">$1,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="UC">
-          <div class="title">660 UC</div>
-          <div class="subtitle">PUBG Mobile</div>
-          <div class="price">$2,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="UC">
-          <div class="title">1,800 UC</div>
-          <div class="subtitle">PUBG Mobile</div>
-          <div class="price">$5,500 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="UC">
-          <div class="title">3,850 UC</div>
-          <div class="subtitle">PUBG Mobile</div>
-          <div class="price">$11,400 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=300&q=80" alt="UC">
-          <div class="title">8,100 UC</div>
-          <div class="subtitle">PUBG Mobile</div>
-          <div class="price">$21,500 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<h1>
+LEVEL UP<br>
+YOUR <span>GAME.</span>
+</h1>
 
-  <!-- COD MOBILE SECTION (MOVEABLE SLIDER) -->
-  <div class="section-container">
-    <div class="slider-header">
-      <h2 class="section-title" style="margin:0; text-align:left;">🎯 COD Mobile (CP)</h2>
-      <div class="slider-controls">
-        <button class="slider-btn" onclick="slide('cod-slider', -250)">❮</button>
-        <button class="slider-btn" onclick="slide('cod-slider', 250)">❯</button>
-      </div>
-    </div>
-    <div class="cards-slider-wrapper" id="cod-slider">
-      <div class="cards-slider">
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="CP">
-          <div class="title">80 CP</div>
-          <div class="subtitle">COD Mobile</div>
-          <div class="price">$400 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="CP">
-          <div class="title">420 CP</div>
-          <div class="subtitle">COD Mobile</div>
-          <div class="price">$1,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="CP">
-          <div class="title">880 CP</div>
-          <div class="subtitle">COD Mobile</div>
-          <div class="price">$2,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="CP">
-          <div class="title">2,400 CP</div>
-          <div class="subtitle">COD Mobile</div>
-          <div class="price">$5,500 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="CP">
-          <div class="title">5,000 CP</div>
-          <div class="subtitle">COD Mobile</div>
-          <div class="price">$11,000 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=300&q=80" alt="CP">
-          <div class="title">10,800 CP</div>
-          <div class="subtitle">COD Mobile</div>
-          <div class="price">$21,500 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<p>
+Gaming top-ups, digital products and exclusive deals.
+Choose your game, choose your package and order directly
+through DARK.
+</p>
 
-  <!-- ROBLOX SECTION (MOVEABLE SLIDER) -->
-  <div class="section-container" id="roblox">
-    <div class="slider-header">
-      <h2 class="section-title" style="margin:0; text-align:left;">🧱 Roblox (Robux)</h2>
-      <div class="slider-controls">
-        <button class="slider-btn" onclick="slide('roblox-slider', -250)">❮</button>
-        <button class="slider-btn" onclick="slide('roblox-slider', 250)">❯</button>
-      </div>
-    </div>
-    <div class="cards-slider-wrapper" id="roblox-slider">
-      <div class="cards-slider">
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">40 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">80 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$600 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">500 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$1,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">1,000 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$2,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">2,000 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$4,600 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">4,500 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$11,300 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">10,000 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$21,500 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-        <div class="game-card">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" alt="Robux">
-          <div class="title">22,500 Robux</div>
-          <div class="subtitle">Roblox</div>
-          <div class="price">$43,000 GYD</div>
-          <button class="btn-card">Buy Now</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="actions">
+<a href="#games" class="btn primary">
+EXPLORE GAMING →
+</a>
 
-  <!-- FLOATING CHAT / WHATSAPP BUTTONS -->
-  <div class="floating-chat">
-    <a href="https://wa.me/13436555995" target="_blank" class="chat-btn wa-btn">
-      💬 WhatsApp Support
-    </a>
-  </div>
+<a href="#contact" class="btn secondary">
+CONTACT DARK
+</a>
+</div>
+</div>
 
-  <footer>
-    <p>DARK Hub © 2026 | Digital Entertainment, Gaming & MMG Services Guyana</p>
-  </footer>
+<div>
+<img
+class="hero-logo"
+src="1787436309105.png"
+alt="DARK">
+</div>
 
-  <!-- JS FOR SCROLLING SLIDERS -->
-  <script>
-    function slide(sliderId, distance) {
-      const slider = document.getElementById(sliderId);
-      slider.scrollBy({
-        left: distance,
-        behavior: 'smooth'
-      });
-    }
+</div>
+</section>
 
-    function scrollToSection(id) {
-      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    }
-  </script>
+<!-- GAMES -->
+<section id="games">
+<div class="wrap">
+
+<div class="tag">DARK GAMING</div>
+<h2>Choose Your Game</h2>
+
+<p class="desc">
+Tap a game to see its exact packages and start your order.
+</p>
+
+<div class="games">
+
+<div class="game"
+onclick="openProduct('Roblox','Robux','images/f93f089a3d8211ede4c832c3a24efe1e.jpg',
+[['40 Robux','300'],['80 Robux','600'],['500 Robux','1,300'],['1,000 Robux','2,300'],['2,000 Robux','4,600'],['4,500 Robux','11,300'],['10,000 Robux','21,500'],['22,500 Robux','43,000']])">
+
+<img src="images/f93f089a3d8211ede4c832c3a24efe1e.jpg">
+<div class="game-info">
+<small>ROBLOX</small>
+<h3>Robux</h3>
+<p>Tap to view packages</p>
+</div>
+</div>
+
+<div class="game"
+onclick="openProduct('Free Fire','Diamonds','images/30de15ba0e69c62e5e5987ceaae08401.jpg',
+[['100 Diamonds','300'],['210 Diamonds','600'],['530 Diamonds','1,300'],['1,080 Diamonds','2,500'],['2,200 Diamonds','5,200']])">
+
+<img src="images/30de15ba0e69c62e5e5987ceaae08401.jpg">
+<div class="game-info">
+<small>FREE FIRE</small>
+<h3>Diamonds</h3>
+<p>Tap to view packages</p>
+</div>
+</div>
+
+<div class="game"
+onclick="openProduct('Call of Duty Mobile','CP','images/f9f56c26780ac312b21e2d3a7da703f5.jpg',
+[['80 CP','400'],['420 CP','1,300'],['880 CP','2,300'],['2,400 CP','5,500'],['5,000 CP','11,000'],['10,800 CP','21,500']])">
+
+<img src="images/f9f56c26780ac312b21e2d3a7da703f5.jpg">
+<div class="game-info">
+<small>CALL OF DUTY</small>
+<h3>CP</h3>
+<p>Tap to view packages</p>
+</div>
+</div>
+
+<div class="game"
+onclick="openProduct('PUBG Mobile','UC','images/f31054399c0c2604548ba7dfdced2a62.jpg',
+[['60 UC','300'],['325 UC','1,300'],['660 UC','2,300'],['1,800 UC','5,500'],['3,850 UC','11,400'],['8,100 UC','21,500']])">
+
+<img src="images/f31054399c0c2604548ba7dfdced2a62.jpg">
+<div class="game-info">
+<small>PUBG MOBILE</small>
+<h3>UC</h3>
+<p>Tap to view packages</p>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- DEALS -->
+<section id="deals">
+<div class="wrap">
+
+<div class="tag">DARK EXCLUSIVE</div>
+<h2>Deals & Drops</h2>
+
+<div class="deals">
+
+<div class="deal">
+<h3>Power Up Your Game.</h3>
+<p>
+Choose from DARK's gaming top-ups and get your order
+started in a few taps.
+</p>
+<a href="#games" class="btn primary">SHOP NOW</a>
+</div>
+
+<div class="deal">
+<h3>More Coming.</h3>
+<p>
+Gift cards and additional digital products can be added
+as DARK grows.
+</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section>
+<div class="wrap">
+
+<div class="tag">WHY DARK</div>
+<h2>Built For Gamers.</h2>
+
+<div class="features">
+
+<div class="feature">
+<span>⚡</span>
+<h3>Fast Ordering</h3>
+<p>
+Choose your game and package and send your order request.
+</p>
+</div>
+
+<div class="feature">
+<span>🛡️</span>
+<h3>Clear Payment</h3>
+<p>
+Payment information is displayed clearly before you order.
+</p>
+</div>
+
+<div class="feature">
+<span>🎮</span>
+<h3>Gaming Focused</h3>
+<p>
+DARK is built around gaming top-ups and digital products.
+</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- PAYMENT -->
+<section id="payment">
+<div class="wrap">
+
+<div class="tag">PAYMENT</div>
+<h2>Complete Your Order</h2>
+
+<div class="payment">
+
+<div class="payment-card">
+<h3>MMG</h3>
+
+<div class="line">
+<span>Number</span>
+<strong>762-6433</strong>
+</div>
+
+<div class="line">
+<span>Merchant</span>
+<strong>CASSIA HENRY</strong>
+</div>
+
+</div>
+
+<div class="payment-card">
+<h3>How It Works</h3>
+
+<div class="line">
+<span>01</span>
+<strong>Choose game</strong>
+</div>
+
+<div class="line">
+<span>02</span>
+<strong>Choose package</strong>
+</div>
+
+<div class="line">
+<span>03</span>
+<strong>Enter Player ID</strong>
+</div>
+
+<div class="line">
+<span>04</span>
+<strong>Send order</strong>
+</div>
+
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<div class="wrap">
+
+<div class="contact">
+
+<div class="tag">CONTACT DARK</div>
+
+<h2>Ready To Level Up?</h2>
+
+<p>
+Message DARK to place your gaming order.
+</p>
+
+<div class="actions" style="justify-content:center">
+
+<a
+class="btn primary"
+href="https://wa.me/13436555995"
+target="_blank">
+WHATSAPP
+</a>
+
+<a
+class="btn secondary"
+href="https://wa.me/5927002769"
+target="_blank">
+SECOND CONTACT
+</a>
+
+</div>
+
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer">
+<strong>DARK</strong>
+<span>Digital Gaming Store • Guyana</span>
+<span>© 2026 DARK</span>
+</div>
+</footer>
+
+<!-- PRODUCT WINDOW -->
+<div class="modal-bg" id="modal">
+
+<div class="modal">
+
+<div class="modal-grid">
+
+<div class="modal-image">
+<img id="productImage">
+</div>
+
+<div class="modal-content">
+
+<button class="close" onclick="closeProduct()">×</button>
+
+<div class="tag">DARK GAMING</div>
+
+<h2 id="productName"></h2>
+
+<p id="productType"></p>
+
+<div id="packages"></div>
+
+<input
+class="field"
+id="player"
+placeholder="Enter Player ID / Username">
+
+<button
+class="btn primary"
+style="width:100%"
+onclick="sendOrder()">
+SEND ORDER →
+</button>
+
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+let currentGame="";
+let currentPackage="";
+
+function openProduct(name,type,image,packages){
+
+currentGame=name;
+currentPackage="";
+
+document.getElementById("productName").textContent=name;
+document.getElementById("productType").textContent=
+"Choose your "+type+" package.";
+
+document.getElementById("productImage").src=image;
+
+let box=document.getElementById("packages");
+box.innerHTML="";
+
+packages.forEach(function(p){
+
+let button=document.createElement("button");
+
+button.className="package";
+
+button.innerHTML=
+"<span>"+p[0]+"</span><strong>GYD $"+p[1]+"</strong>";
+
+button.onclick=function(){
+
+document.querySelectorAll(".package")
+.forEach(x=>x.classList.remove("selected"));
+
+button.classList.add("selected");
+
+currentPackage=p[0]+" — GYD $"+p[1];
+
+};
+
+box.appendChild(button);
+
+});
+
+document.getElementById("modal").classList.add("open");
+
+document.body.style.overflow="hidden";
+}
+
+function closeProduct(){
+
+document.getElementById("modal").classList.remove("open");
+
+document.body.style.overflow="";
+}
+
+function sendOrder(){
+
+let player=document.getElementById("player").value.trim();
+
+if(!currentPackage){
+
+alert("Please choose a package.");
+
+return;
+}
+
+if(!player){
+
+alert("Please enter your Player ID or Username.");
+
+return;
+}
+
+let message=
+"Hi DARK! I want to place an order.%0A%0A"+
+"Game: "+encodeURIComponent(currentGame)+
+"%0APackage: "+encodeURIComponent(currentPackage)+
+"%0APlayer ID/Username: "+encodeURIComponent(player);
+
+window.open(
+"https://wa.me/13436555995?text="+message,
+"_blank"
+);
+
+}
+
+document.getElementById("modal").onclick=function(e){
+
+if(e.target===this){
+
+closeProduct();
+
+}
+
+};
+
+</script>
 
 </body>
-</html>
+  </html>
 
