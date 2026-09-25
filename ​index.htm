@@ -1,33 +1,543 @@
-<div>
-  <video id="webcam" autoplay playsinline width="320" height="240"></video>
-  <button id="captureBtn">Take Picture</button>
-  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-  <img id="photoOutput" alt="Your snapshot will appear here">
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lobby & Bibi's Wedding</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
 
-<script>
-  const video = document.getElementById('webcam');
-  const canvas = document.getElementById('canvas');
-  const photo = document.getElementById('photoOutput');
-  const captureBtn = document.getElementById('captureBtn');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  // Request camera access explicitly from the user
-  navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-    .then((stream) => {
-      video.srcObject = stream;
-    })
-    .catch((err) => {
-      console.error("Camera access denied or unavailable:", err);
+    body {
+      background: linear-gradient(to bottom, #fffaf0, #ffe4e1);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    header {
+      margin-top: 15px;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.2rem;
+      color: #d81b60;
+      margin-bottom: 5px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Interactive Button */
+    .tap-btn {
+      margin-top: 10px;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(45deg, #ff4081, #ff80ab);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .tap-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
+    }
+
+    /* Dialogue Display Box */
+    #message-box {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #2c3e50;
+      font-weight: 600;
+      min-height: 45px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 15px;
+      border: 2px solid #ff80ab;
+      max-width: 90%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: opacity 0.3s;
+    }
+
+    /* Scene Container */
+    .scene {
+      position: relative;
+      width: 100%;
+      max-width: 950px;
+      height: 450px;
+      margin-top: auto;
+      overflow: hidden;
+    }
+
+    /* Arch & Pastor */
+    .altar {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .arch {
+      width: 170px;
+      height: 200px;
+      border: 8px solid #ffd700;
+      border-bottom: none;
+      border-radius: 100px 100px 0 0;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+      position: relative;
+    }
+
+    .arch::before {
+      content: '🌸 🌿 🌹 🌿 🌸';
+      position: absolute;
+      top: -20px;
+      left: -25px;
+      right: -25px;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+
+    .pastor-container {
+      position: absolute;
+      bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pastor-tag {
+      background: #333;
+      color: #ffd700;
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      border-radius: 8px;
+      margin-bottom: 2px;
+    }
+
+    .pastor-svg {
+      width: 50px;
+      height: 90px;
+    }
+
+    /* Aisle / Carpet */
+    .aisle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 100%;
+      background: linear-gradient(to top, #c2185b, #e91e63);
+      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+      z-index: 1;
+    }
+
+    /* Seating with Full Body Sitting Guests */
+    .seating-section {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 15px;
+      z-index: 4;
+    }
+
+    .pew-side {
+      display: flex;
+      gap: 12px;
+      position: relative;
+    }
+
+    .guest-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .name-tag {
+      background: #1a1a1a;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-bottom: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .guest-svg {
+      width: 55px;
+      height: 100px;
+    }
+
+    /* Ramens Speech Bubble */
+    .speech-bubble {
+      position: absolute;
+      top: -45px;
+      background: #ffffff;
+      color: #333;
+      border: 2px solid #ff4081;
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      white-space: nowrap;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 30;
+    }
+
+    .speech-bubble.show {
+      opacity: 1;
+    }
+
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 7px 5px 0;
+      border-style: solid;
+      border-color: #ffffff transparent;
+    }
+
+    /* Couple Walking Container */
+    .couple {
+      position: absolute;
+      bottom: 10px;
+      left: -150px;
+      display: flex;
+      align-items: flex-end;
+      z-index: 10;
+      transition: left 6s ease-in-out;
+    }
+
+    .couple.walk {
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bobbing 0.6s infinite alternate;
+    }
+
+    @keyframes bobbing {
+      0% { margin-bottom: 0px; }
+      100% { margin-bottom: 6px; }
+    }
+
+    .groom, .bride {
+      width: 70px;
+      height: 140px;
+    }
+
+    .bride {
+      margin-left: -15px;
+    }
+
+    /* Floating Hearts */
+    .heart {
+      position: absolute;
+      color: #ff4081;
+      font-size: 22px;
+      pointer-events: none;
+      animation: floatUp 3s linear forwards;
+      z-index: 25;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-160px) scale(1.5); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Lobby & Bibi's Wedding</h1>
+    <button class="tap-btn" id="tapBtn">✨ Tap to Start Wedding ✨</button>
+    <div id="message-box">Tap the button to start the ceremony!</div>
+  </header>
+
+  <div class="scene" id="scene">
+    <!-- Altar & Pastor -->
+    <div class="altar">
+      <div class="arch">
+        <div class="pastor-container">
+          <div class="pastor-tag">Pastor</div>
+          <svg class="pastor-svg" viewBox="0 0 60 100">
+            <!-- Pastor Head & Glasses -->
+            <circle cx="30" cy="20" r="12" fill="#f1c27d"/>
+            <circle cx="25" cy="20" r="3" stroke="#000" stroke-width="1" fill="none"/>
+            <circle cx="35" cy="20" r="3" stroke="#000" stroke-width="1" fill="none"/>
+            <line x1="28" y1="20" x2="32" y2="20" stroke="#000"/>
+            <!-- Robe & Bible -->
+            <path d="M 15 35 L 45 35 L 50 100 L 10 100 Z" fill="#2c3e50"/>
+            <polygon points="25,35 35,35 30,55" fill="#ffffff"/>
+            <rect x="22" y="55" width="16" height="20" fill="#8b4513" rx="2"/>
+            <line x1="30" y1="57" x2="30" y2="73" stroke="#ffd700" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="aisle"></div>
+
+    <!-- Seating with Full Body Guests Sitting -->
+    <div class="seating-section">
+      <!-- Left Bench -->
+      <div class="pew-side">
+        <!-- Dark -->
+        <div class="guest-container">
+          <div class="name-tag">Dark</div>
+          <svg class="guest-svg" viewBox="0 0 60 100">
+            <circle cx="30" cy="20" r="10" fill="#f1c27d"/>
+            <path d="M 20 18 Q 30 5 40 18" fill="#333"/>
+            <!-- Torso -->
+            <rect x="20" y="32" width="20" height="30" fill="#2c3e50" rx="3"/>
+            <!-- Legs Sitting -->
+            <rect x="20" y="60" width="25" height="10" fill="#1a252f" rx="2"/>
+            <rect x="40" y="60" width="8" height="25" fill="#1a252f" rx="2"/>
+            <!-- Wooden Bench -->
+            <rect x="5" y="65" width="50" height="8" fill="#8b4513"/>
+          </svg>
+        </div>
+
+        <!-- Orin -->
+        <div class="guest-container">
+          <div class="name-tag">Orin</div>
+          <svg class="guest-svg" viewBox="0 0 60 100">
+            <circle cx="30" cy="20" r="10" fill="#f1c27d"/>
+            <path d="M 20 18 Q 30 8 40 18" fill="#8e44ad"/>
+            <rect x="20" y="32" width="20" height="30" fill="#27ae60" rx="3"/>
+            <rect x="20" y="60" width="25" height="10" fill="#1e8449" rx="2"/>
+            <rect x="40" y="60" width="8" height="25" fill="#1e8449" rx="2"/>
+            <rect x="5" y="65" width="50" height="8" fill="#8b4513"/>
+          </svg>
+        </div>
+
+        <!-- Skyrim -->
+        <div class="guest-container">
+          <div class="name-tag">Skyrim</div>
+          <svg class="guest-svg" viewBox="0 0 60 100">
+            <circle cx="30" cy="20" r="10" fill="#f1c27d"/>
+            <path d="M 20 20 Q 30 10 40 20" fill="#d35400"/>
+            <rect x="20" y="32" width="20" height="30" fill="#2980b9" rx="3"/>
+            <rect x="20" y="60" width="25" height="10" fill="#1b4f72" rx="2"/>
+            <rect x="40" y="60" width="8" height="25" fill="#1b4f72" rx="2"/>
+            <rect x="5" y="65" width="50" height="8" fill="#8b4513"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right Bench -->
+      <div class="pew-side">
+        <!-- Nick -->
+        <div class="guest-container">
+          <div class="name-tag">Nick</div>
+          <svg class="guest-svg" viewBox="0 0 60 100">
+            <circle cx="30" cy="20" r="10" fill="#f1c27d"/>
+            <path d="M 20 18 Q 30 5 40 18" fill="#4a3728"/>
+            <rect x="20" y="32" width="20" height="30" fill="#16a085" rx="3"/>
+            <rect x="15" y="60" width="25" height="10" fill="#117864" rx="2"/>
+            <rect x="12" y="60" width="8" height="25" fill="#117864" rx="2"/>
+            <rect x="5" y="65" width="50" height="8" fill="#8b4513"/>
+          </svg>
+        </div>
+
+        <!-- Shin -->
+        <div class="guest-container">
+          <div class="name-tag">Shin</div>
+          <svg class="guest-svg" viewBox="0 0 60 100">
+            <circle cx="30" cy="20" r="10" fill="#f1c27d"/>
+            <path d="M 20 20 Q 30 8 40 20" fill="#f39c12"/>
+            <rect x="20" y="32" width="20" height="30" fill="#c0392b" rx="3"/>
+            <rect x="15" y="60" width="25" height="10" fill="#7b241c" rx="2"/>
+            <rect x="12" y="60" width="8" height="25" fill="#7b241c" rx="2"/>
+            <rect x="5" y="65" width="50" height="8" fill="#8b4513"/>
+          </svg>
+        </div>
+
+        <!-- Ramens -->
+        <div class="guest-container">
+          <div class="speech-bubble" id="ramensBubble">lobby going for the thick stuffs</div>
+          <div class="name-tag">Ramens</div>
+          <svg class="guest-svg" viewBox="0 0 60 100">
+            <circle cx="30" cy="20" r="10" fill="#f1c27d"/>
+            <path d="M 20 18 Q 30 5 40 18" fill="#2c3e50"/>
+            <rect x="20" y="32" width="20" height="30" fill="#8e44ad" rx="3"/>
+            <rect x="15" y="60" width="25" height="10" fill="#512e5f" rx="2"/>
+            <rect x="12" y="60" width="8" height="25" fill="#512e5f" rx="2"/>
+            <rect x="5" y="65" width="50" height="8" fill="#8b4513"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Couple -->
+    <div class="couple" id="couple">
+      <!-- Groom (Lobby) -->
+      <svg class="groom" viewBox="0 0 100 200">
+        <circle cx="50" cy="35" r="20" fill="#f1c27d"/>
+        <path d="M 30 30 Q 50 10 70 30 Q 50 20 30 30 Z" fill="#4a3728"/>
+        <circle cx="43" cy="35" r="2" fill="#000"/>
+        <circle cx="57" cy="35" r="2" fill="#000"/>
+        <path d="M 45 43 Q 50 48 55 43" stroke="#000" stroke-width="2" fill="none"/>
+        <path d="M 25 60 L 75 60 L 80 140 L 20 140 Z" fill="#1a1a1a"/>
+        <polygon points="40,60 60,60 50,90" fill="#ffffff"/>
+        <polygon points="43,62 57,62 50,68" fill="#d81b60"/>
+        <rect x="30" y="140" width="15" height="50" fill="#1a1a1a"/>
+        <rect x="55" y="140" width="15" height="50" fill="#1a1a1a"/>
+        <path d="M 70 70 Q 85 90 95 95" stroke="#1a1a1a" stroke-width="10" fill="none"/>
+        <circle cx="95" cy="95" r="6" fill="#f1c27d"/>
+      </svg>
+
+      <!-- Bride (Bibi) -->
+      <svg class="bride" viewBox="0 0 100 200">
+        <path d="M 25 35 Q 50 10 75 35 L 85 150 L 15 150 Z" fill="#ffffff" opacity="0.6"/>
+        <circle cx="50" cy="35" r="20" fill="#f1c27d"/>
+        <path d="M 28 35 Q 50 10 72 35 Q 75 60 70 70 Q 30 70 28 35 Z" fill="#8d5524"/>
+        <path d="M 40 20 L 45 15 L 50 20 L 55 15 L 60 20" stroke="#ffd700" stroke-width="2" fill="none"/>
+        <circle cx="43" cy="35" r="2" fill="#000"/>
+        <circle cx="57" cy="35" r="2" fill="#000"/>
+        <path d="M 45 43 Q 50 48 55 43" stroke="#000" stroke-width="2" fill="none"/>
+        <path d="M 30 60 L 70 60 L 65 85 L 35 85 Z" fill="#ffffff"/>
+        <path d="M 35 85 L 65 85 L 90 180 L 10 180 Z" fill="#ffffff"/>
+        <path d="M 30 70 Q 15 90 5 95" stroke="#ffffff" stroke-width="8" fill="none"/>
+        <circle cx="5" cy="95" r="6" fill="#f1c27d"/>
+        <circle cx="70" cy="90" r="10" fill="#ff4081"/>
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const tapBtn = document.getElementById('tapBtn');
+    const messageBox = document.getElementById('message-box');
+    const couple = document.getElementById('couple');
+    const ramensBubble = document.getElementById('ramensBubble');
+    const scene = document.getElementById('scene');
+
+    let stage = 0; // Tracks wedding steps
+
+    // Text-to-speech engine helper with pitch & pitch voice tuning
+    function speak(text, pitch, rate) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const speech = new SpeechSynthesisUtterance(text);
+        speech.pitch = pitch; // Low = Male voice, High = Female voice
+        speech.rate = rate;
+        window.speechSynthesis.speak(speech);
+      }
+    }
+
+    tapBtn.addEventListener('click', () => {
+      if (stage === 0) {
+        // Step 1: Walk Down the Aisle
+        couple.classList.add('walk');
+        messageBox.textContent = "Ramens: \"Lobby going for the thick stuffs!\"";
+        ramensBubble.classList.add('show');
+        
+        // Ramens Guy Voice (Low Pitch: 0.7)
+        speak("lobby going for the thick stuffs", 0.7, 0.95);
+        
+        tapBtn.textContent = "✨ Next: Talk to Pastor ✨";
+        stage = 1;
+
+      } else if (stage === 1) {
+        // Step 2: Pastor asks Lobby
+        ramensBubble.classList.remove('show');
+        const text = "Pastor: Lobby, do you take Bibi to be your wedded wife?";
+        messageBox.textContent = text;
+        
+        // Pastor Guy Voice (Pitch: 0.8)
+        speak("Lobby, do you take Bibi to be your wedded wife?", 0.8, 0.9);
+        
+        tapBtn.textContent = "✨ Lobby Answers ✨";
+        stage = 2;
+
+      } else if (stage === 2) {
+        // Step 3: Lobby says Yes
+        messageBox.textContent = "Lobby: Yes, I do!";
+        
+        // Lobby Guy Voice (Low Pitch: 0.6)
+        speak("Yes, I do!", 0.6, 1.0);
+        
+        tapBtn.textContent = "✨ Ask Bibi ✨";
+        stage = 3;
+
+      } else if (stage === 3) {
+        // Step 4: Pastor asks Bibi
+        const text = "Pastor: Bibi, do you take Lobby to be your wedded husband?";
+        messageBox.textContent = text;
+        
+        // Pastor Guy Voice
+        speak("Bibi, do you take Lobby to be your wedded husband?", 0.8, 0.9);
+        
+        tapBtn.textContent = "✨ Bibi Answers ✨";
+        stage = 4;
+
+      } else if (stage === 4) {
+        // Step 5: Bibi says Yes & Celebration
+        messageBox.textContent = "Bibi: Yes, I do! ❤️";
+        
+        // Bibi Girl Voice (High Pitch: 1.6)
+        speak("Yes, I do!", 1.6, 1.0);
+        
+        createHearts();
+
+        setTimeout(() => {
+          const finalMsg = "Thank you for attending Lobby and Bibi's wedding!";
+          messageBox.textContent = finalMsg;
+          speak(finalMsg, 1.1, 0.9);
+        }, 1500);
+
+        tapBtn.textContent = "🎉 Play Again 🎉";
+        stage = 5;
+
+      } else if (stage === 5) {
+        // Reset Wedding
+        couple.classList.remove('walk');
+        messageBox.textContent = "Tap the button to start the ceremony!";
+        tapBtn.textContent = "✨ Tap to Start Wedding ✨";
+        stage = 0;
+      }
     });
 
-  // Capture frame to canvas
-  captureBtn.addEventListener('click', () => {
-    const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    // Convert captured frame to image URL
-    const imageData = canvas.toDataURL('image/png');
-    photo.setAttribute('src', imageData);
-  });
-</script>
+    function createHearts() {
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.classList.add('heart');
+          heart.innerHTML = '❤️';
+          heart.style.left = Math.random() * 80 + 10 + '%';
+          heart.style.bottom = '20px';
+          scene.appendChild(heart);
 
+          setTimeout(() => { heart.remove(); }, 3000);
+        }, i * 200);
+      }
+    }
+  </script>
+</body>
+</html>
